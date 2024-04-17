@@ -1,6 +1,8 @@
 # Overall Disease Burden
 
-```{r}
+We investigate the overall disease burden in DALYs among three countries; Ghana, Kenya, and Zimababwe
+
+```{r echo=F, message=F}
 # Load necessary packages
 pacman::p_load(tidyverse, knitr, here)
 
@@ -10,7 +12,15 @@ data_overall <- read_csv(here("data", "burden-of-disease-all-causes.csv"))
 
 ## Table of Estimates for Overall Disease Burden Over Time
 
-```{r}
+```{r echo=F, message=F}
+disease_burden_table <- data_overall %>% 
+  filter(Entity == "Kenya" |Entity == "Zimbabwe"| Entity == "Ghana") %>% 
+  pivot_wider(id_cols = Entity, 
+              names_from= Year , 
+              values_from = `DALYs (Disability-Adjusted Life Years) - All causes - Sex: Both - Age: Age-standardized (Rate)`) %>% 
+  kable()
+disease_burden_table  
+
 # Here render a table for the DALY burden over time for the three countries 
 # You should pivot the data to show each country in a separate column.
 # Use kable() from the knitr package to render the table.
@@ -18,7 +28,20 @@ data_overall <- read_csv(here("data", "burden-of-disease-all-causes.csv"))
 
 ## Plot Showing Trends in Overall Disease Burden Over Time
 
-```{r}
+```{r, echo=F, message=F}
+
+filtered_data <- data_overall %>%
+  filter(Entity %in% c("Kenya", "Zimbabwe", "Ghana"))
+
+# Plotting the line graph with ggplot2
+disease_burden_plot <- ggplot(filtered_data, aes(x = Year, y = `DALYs (Disability-Adjusted Life Years) - All causes - Sex: Both - Age: Age-standardized (Rate)`, group = Entity, color = Entity)) +
+  geom_line() +
+  labs(title = "Trend of DALYs Burden Over Time",
+       x = "Year",
+       y = "DALYs (Rate)",
+       color = "Country") +
+  theme_minimal()
+disease_burden_plot
 # Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
 ```
 
@@ -26,3 +49,4 @@ data_overall <- read_csv(here("data", "burden-of-disease-all-causes.csv"))
 
 Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
 
+Zimbabwe had the highest overall disease burden among the three countries over time. All countries experienced a peak in disease burden the early 2000s and had been in a sharp decline since then. This can be attributed to the massive global health efforts in recent years.
