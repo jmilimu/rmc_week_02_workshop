@@ -1,4 +1,5 @@
 ---
+author: "Jerome Milimu"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -44,12 +45,14 @@ gha_ken_zwe_data_cmnn <-
 gha_ken_zwe_data_cmnn_wide <- 
   gha_ken_zwe_data_cmnn %>% 
     pivot_wider(names_from = "country",
-                values_from = "DALYs") %>% 
+                values_from = "DALYs") 
+
+#head(gha_ken_zwe_data_cmnn_wide)
 
 # Render table
-  kable()
+ knitr::kable(gha_ken_zwe_data_cmnn_wide)
 
-gha_ken_zwe_data_cmnn_wide
+
 ```
 
 
