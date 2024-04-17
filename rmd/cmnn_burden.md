@@ -50,3 +50,7 @@ communicable, maternal, neonatal, and nutritional disease burden.
 Followed by Kenya and finally Ghana. It was interesting to note that the
 DALYs followed a similar trend to the burden of the HIV/AIDS pandemic
 faced by each country
+
+## Cumulative DALY Burden For The Three Countries Over Time
+
+![](cmnn_burden_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->

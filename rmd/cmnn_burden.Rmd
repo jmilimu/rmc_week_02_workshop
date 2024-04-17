@@ -77,3 +77,26 @@ gha_ken_zwe_data_cmnn %>%
 Over the Period examined, Zimbabwe had the highest DALYs related to communicable, maternal, neonatal, and nutritional disease burden. Followed by Kenya and finally Ghana. It was interesting to note that the DALYs followed a similar trend to the burden of the HIV/AIDS pandemic faced by each country 
 
 
+## Cumulative DALY Burden For The Three Countries Over Time
+
+```{r echo=FALSE}
+# Calculate cumulative DALYs
+gha_ken_zwe_data_cmnn <- 
+  gha_ken_zwe_data_cmnn %>%
+  group_by(country) %>%
+  arrange(year) %>%
+  mutate(Cumulative_DALYs = cumsum(DALYs))
+
+# Plotting the cumulative DALY burden
+ggplot(gha_ken_zwe_data_cmnn, 
+       aes(x = year, 
+           y = Cumulative_DALYs, 
+           color = country)) +
+  geom_line() +
+  labs(title = "Cumulative DALY Burden Over Time by Country",
+       x = "Year",
+       y = "Cumulative DALYs",
+       color = "Country") +
+  theme_minimal()
+```
+
