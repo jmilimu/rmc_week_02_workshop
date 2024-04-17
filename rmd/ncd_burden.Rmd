@@ -2,7 +2,7 @@
 
 ```{r}
 # Load necessary packages
-pacman::p_load(tidyverse, knitr, here)
+pacman::p_load(tidyverse, knitr, here, janitor)
 
 # Import the non-communicable diseases data
 data_ncd <- read_csv(here("data", "burden-of-disease-ncd.csv"))
@@ -11,9 +11,24 @@ data_ncd <- read_csv(here("data", "burden-of-disease-ncd.csv"))
 ## Table of Estimates for NCD Burden Over Time
 
 ```{r}
-# Here render a table for the DALY burden over time for the three countries 
+# Here render a table for the DALY burden over time for the three countries
+data_ncd_clean <- data_ncd %>%
+  clean_names() %>%
+  rename(daly = dal_ys_disability_adjusted_life_years_non_communicable_diseases_sex_both_age_age_standardized_rate)%>%
+  select(-code)
+  
+
+data_ncd_select_countries <- data_ncd_clean %>%
+  filter(entity %in% c("Ghana", "Kenya", "Zimbabwe"))
+
 # You should pivot the data to show each country in a separate column.
+ 
+data_ncd_select_countries_pivot <- data_ncd_select_countries %>%
+  pivot_wider(names_from = "entity", values_from = "daly")
+
 # Use kable() from the knitr package to render the table.
+
+kable()
 ```
 
 ## Plot Showing Trends in NCD Burden Over Time 
