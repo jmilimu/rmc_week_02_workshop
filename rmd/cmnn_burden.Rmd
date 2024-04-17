@@ -1,8 +1,16 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Communicable, Maternal, Neonatal, and Nutritional Disease Burden (CMNN)
 
-```{r}
+```{r include=FALSE}
 # Load necessary packages
-pacman::p_load(tidyverse, knitr, here)
+pacman::p_load(tidyverse, 
+               knitr, 
+               here,
+               janitor)
 
 # Import the communicable diseases data
 data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
@@ -10,20 +18,60 @@ data_cmnn <- read_csv(here("data", "burden-of-disease-cmnn.csv"))
 
 ## Table of Estimates for CMNN Burden Over Time
 
-```{r}
+```{r echo=FALSE}
 # Here render a table for the DALY burden over time for the three countries 
 # You should pivot the data to show each country in a separate column.
 # Use kable() from the knitr package to render the table.
+
+data_cmnn <- 
+  data_cmnn %>% 
+    clean_names()
+
+#names(data_cmnn)
+
+gha_ken_zwe_data_cmnn <-
+  data_cmnn %>% 
+    filter(entity  %in% c("Ghana",
+                          "Kenya",
+                          "Zimbabwe")) %>% 
+    select(-code) %>% 
+    rename(country = "entity",
+           DALYs = "dal_ys_disability_adjusted_life_years_communicable_maternal_neonatal_and_nutritional_diseases_sex_both_age_age_standardized_rate")
+  
+#head(gha_ken_zwe_data_cmnn)
+
+
+gha_ken_zwe_data_cmnn_wide <- 
+  gha_ken_zwe_data_cmnn %>% 
+    pivot_wider(names_from = "country",
+                values_from = "DALYs") %>% 
+
+# Render table
+  kable()
+
+gha_ken_zwe_data_cmnn_wide
 ```
+
+
 
 ## Plot Showing Trends in CMNN Burden Over Time
 
-```{r}
-# Here, plot a line graph showing the trend of DALY burden for the chosen countries over time. You can use ggplot2 to create this plot. Each country's line should be a different color.
+```{r echo=FALSE}
+gha_ken_zwe_data_cmnn %>% 
+  ggplot(
+    mapping = aes(x = year,
+                  y = DALYs,
+                  colour = country)) +
+  theme_minimal() +
+  geom_line() +
+  labs(
+    title = "Trends in CMNN Burden Over Time",
+    subtitle = "Ghana, Kenya & Zimbabwe"
+  )
 ```
 
 ## Summary of CMNN Burden Findings
 
-Provide a brief analysis based on the data presented in the table and chart. Highlight any significant findings or patterns. About 3 sentences.
+Over the Period examined, Zimbabwe had the highest DALYs related to communicable, maternal, neonatal, and nutritional disease burden. Followed by Kenya and finally Ghana. It was interesting to note that the DALYs followed a similar trend to the burden of the HIV/AIDS pandemic faced by each country 
 
 
