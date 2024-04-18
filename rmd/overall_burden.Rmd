@@ -1,3 +1,9 @@
+---
+title: "Overall Disease Burden for Ghana, Kenya & Zimbabwe"
+author: "John Andoh"
+output: github_document
+---
+
 # Overall Disease Burden
 
 We investigate the overall disease burden in DALYs among three countries; Ghana, Kenya, and Zimababwe
@@ -14,10 +20,12 @@ data_overall <- read_csv(here("data", "burden-of-disease-all-causes.csv"))
 
 ```{r echo=F, message=F}
 disease_burden_table <- data_overall %>% 
-  filter(Entity == "Kenya" |Entity == "Zimbabwe"| Entity == "Ghana") %>% 
-  pivot_wider(id_cols = Entity, 
-              names_from= Year , 
-              values_from = `DALYs (Disability-Adjusted Life Years) - All causes - Sex: Both - Age: Age-standardized (Rate)`) %>% 
+  filter(Entity %in% c("Ghana", "Kenya", "Zimbabwe")) %>% 
+  select(-Code) %>% 
+  rename(country = "Entity",
+         DALYs = `DALYs (Disability-Adjusted Life Years) - All causes - Sex: Both - Age: Age-standardized (Rate)`) %>% 
+  pivot_wider(names_from = "country", 
+              values_from = DALYs) %>% 
   kable()
 disease_burden_table  
 
